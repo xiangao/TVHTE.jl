@@ -29,8 +29,8 @@ Full documentation: **<https://xiangao.github.io/TVHTE.jl/>**
 | Page | Description |
 |---|---|
 | [Home](https://xiangao.github.io/TVHTE.jl/) | Overview, install, motivation |
-| [Getting Started](https://xiangao.github.io/TVHTE.jl/vignettes/01_getting_started/) | End-to-end fit + feedback + counterfactual on a synthetic panel |
-| [Reference](https://xiangao.github.io/TVHTE.jl/reference/) | Full API |
+| [Getting Started](https://xiangao.github.io/TVHTE.jl/dev/vignettes/01_getting_started/) | End-to-end walk-through: simulate → fit → posterior trajectories → feedback → direct/indirect counterfactual decomposition, all with executed output |
+| [Reference](https://xiangao.github.io/TVHTE.jl/dev/reference/) | Full API. Each function has its docstring followed by a live `@example` block showing real output (estimates, sizes, etc.) |
 
 ## At a glance
 
