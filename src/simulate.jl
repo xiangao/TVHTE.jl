@@ -17,6 +17,24 @@ covariate feedback (Botosaru-Liu 2026). Mirrors the R package's
 - `feedback_gamma`: optional length-4 vector `(γ0, γY, γX, σ_η)`
   enabling endogenous AR(1) covariate dynamics (K = 1 only).
 - `seed`: RNG seed.
+
+# Examples
+```julia
+using TVHTE
+
+# Common adoption
+sim = simulate_tvhte(N = 200, T = 5, t0 = 3, J = 2,
+                     rho_Y = 0.4, rho_delta = 0.6, seed = 1)
+
+# Staggered with never-treated
+cohorts = rand([3.0, 5.0, Inf], 200)
+sim2 = simulate_tvhte(N = 200, T = 7, t0 = cohorts, J = 2, seed = 2)
+
+# Endogenous covariate (BL 2026 feedback DGP)
+sim3 = simulate_tvhte(N = 200, T = 5, t0 = 3, J = 2,
+                      beta = 0.4,
+                      feedback_gamma = [0.2, 0.3, 0.5, 0.4], seed = 3)
+```
 """
 function simulate_tvhte(; N::Int = 500, T::Int = 6,
                           t0 = 3, J::Int = 3,

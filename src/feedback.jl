@@ -3,6 +3,17 @@
 
 Pooled OLS for the homogeneous covariate-feedback process
 (Botosaru-Liu 2026). Mirrors `fit_feedback()` in the R package.
+
+# Examples
+```julia
+using TVHTE
+
+sim = simulate_tvhte(N = 300, T = 6, t0 = 3, J = 2, beta = 0.4,
+                     feedback_gamma = [0.2, 0.3, 0.5, 0.4], seed = 1)
+fb = fit_feedback(sim.Y, sim.Y0, sim.X, sim.X0)
+fb.coef           # (intercept, gamma_Y, gamma_X)
+fb.sigma_eta
+```
 """
 function fit_feedback(Y::Matrix{Float64}, Y0::AbstractVector,
                       X::Array{Float64,3}, X0::AbstractVector)
@@ -31,6 +42,21 @@ end
 Algorithm 1 of Botosaru-Liu (2026): joint counterfactual `(Y*, X*)`
 under alternative treatment timing, using the estimated structural and
 feedback models.
+
+# Examples
+```julia
+using TVHTE
+
+sim = simulate_tvhte(N = 300, T = 6, t0 = 3, J = 2, beta = 0.4,
+                     feedback_gamma = [0.2, 0.3, 0.5, 0.4], seed = 1)
+fit = tvhte(sim.Y, sim.Y0; t0 = sim.t0, J = sim.J, X = sim.X,
+            compute_se = false)
+fb  = fit_feedback(sim.Y, sim.Y0, sim.X, sim.X0)
+
+# Shift treatment timing from 3 to 5
+cf = simulate_counterfactual(fit, fb, 5; N_star = 200, seed = 99)
+size(cf.Y)
+```
 """
 function simulate_counterfactual(fit, fit_fb, t0_star;
                                  N_star::Int = 500,
