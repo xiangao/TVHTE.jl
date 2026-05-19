@@ -7,6 +7,29 @@ Botosaru-Liu (2025) TV-HTE model. See the R companion for details.
 # Returns
 NamedTuple with `theta`, `prior`, `beta`, `se`, `loglik`,
 `lambda_hat`, `delta_path`, `t0`, `J`, `N`, `T`, `K`, `converged`.
+
+# Examples
+```julia
+using TVHTE
+
+# Common-adoption fit
+sim = simulate_tvhte(N = 300, T = 6, t0 = 3, J = 3,
+                     rho_Y = 0.5, rho_delta = 0.7, seed = 1)
+fit = tvhte(sim.Y, sim.Y0; t0 = sim.t0, J = sim.J, compute_se = false)
+fit.theta.rho_Y, fit.theta.rho_delta
+
+# With a covariate
+sim2 = simulate_tvhte(N = 300, T = 6, t0 = 3, J = 3,
+                      beta = [0.5], seed = 2)
+fit2 = tvhte(sim2.Y, sim2.Y0; t0 = sim2.t0, J = sim2.J,
+             X = sim2.X, compute_se = false)
+fit2.beta
+
+# Staggered adoption with never-treated units (Inf)
+cohorts = rand([3.0, 5.0, Inf], 400)
+sim3 = simulate_tvhte(N = 400, T = 7, t0 = cohorts, J = 2, seed = 3)
+fit3 = tvhte(sim3.Y, sim3.Y0; t0 = sim3.t0, J = sim3.J, compute_se = false)
+```
 """
 function tvhte(Y::Matrix{Float64}, Y0::AbstractVector;
                t0, J::Int, X::Union{Nothing,Array{Float64,3}} = nothing,
