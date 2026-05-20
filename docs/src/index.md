@@ -1,7 +1,7 @@
 # TVHTE.jl
 
-Time-varying heterogeneous treatment effects in event studies. Julia
-port of the R companion [`tvhte`](https://github.com/xiangao/tvhte).
+Time-varying heterogeneous treatment effects in event studies. This is the
+Julia companion to the R package [`tvhte`](https://github.com/xiangao/tvhte).
 
 Implements:
 
@@ -13,12 +13,10 @@ Implements:
 
 ## Why
 
-Standard event-study TWFE regressions implicitly assume the residual
-has no serial dependence after unit/time fixed effects. When outcomes
-are persistent — earnings, employment, consumption, anything with
-habits or adjustment costs — the event-time dummies absorb both the
-true causal path **and** residual dynamics, producing spurious
-pre-trends and biased post-treatment estimates.
+Standard event-study TWFE regressions leave little room for residual serial
+dependence. When outcomes are persistent, event-time dummies can pick up
+persistence as well as treatment effects. This can show up as pre-trends or
+biased post-treatment estimates.
 
 `TVHTE.jl` fits a dynamic panel with **correlated random coefficients
 on `(α_i, δ_{i0})`** and an **AR(1) on the event-time effects**:
@@ -28,10 +26,10 @@ Y_it    = ρ_Y Y_{i,t-1} + α_i + Σ_j D_{it}^j δ_{ij} + X_{it}'β + U_it
 δ_{ij}  = ρ_δ δ_{i,j-1} + ε_{ij},   j ≥ 1
 ```
 
-A two-step semiparametric estimator: QMLE for common parameters
-(integrates `λ_i = (α_i, δ_{i0})` analytically under a Gaussian
-working assumption); Gaussian-conjugate empirical Bayes for unit-level
-posterior trajectories `{δ_{i,j}}_{j=0}^J`.
+The estimator has two steps: QMLE for the common parameters, integrating
+`λ_i = (α_i, δ_{i0})` under a Gaussian working assumption, and then
+Gaussian-conjugate empirical Bayes for the unit-level trajectories
+`{δ_{i,j}}_{j=0}^J`.
 
 The Botosaru-Liu (2026) extension models the covariate `X` as
 endogenous to past outcomes via a homogeneous feedback process; the
@@ -71,8 +69,8 @@ fb  = fit_feedback(sim.Y, sim.Y0, sim.X, sim.X0)
 cf  = simulate_counterfactual(fit, fb, 5; N_star = 500, seed = 99)
 ```
 
-See the **Vignettes** in the sidebar for end-to-end examples and the
-[Reference](reference.md) page for the API.
+See the vignettes in the sidebar for examples and the [Reference](reference.md)
+page for the API.
 
 The R companion [`tvhte`](https://github.com/xiangao/tvhte) follows
 the same API and is tested against the same DGPs; estimates match to

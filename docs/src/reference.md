@@ -5,7 +5,7 @@ CurrentModule = TVHTE
 ```
 
 Each function's docstring describes the API; an `@example` block
-immediately after shows it running with real output. For an end-to-end
+immediately after shows it running with real output. For a longer
 walk-through, see the
 [Getting Started](vignettes/01_getting_started.md) vignette.
 
