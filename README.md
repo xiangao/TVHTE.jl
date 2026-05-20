@@ -2,7 +2,9 @@
 
 [![Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://xiangao.github.io/TVHTE.jl/)
 
-Time-varying heterogeneous treatment effects in event studies, in Julia. Companion to the R package [`tvhte`](https://github.com/xiangao/tvhte).
+`TVHTE.jl` estimates time-varying heterogeneous treatment effects in event
+studies. It is the Julia companion to the R package
+[`tvhte`](https://github.com/xiangao/tvhte).
 
 Implements:
 
@@ -11,9 +13,15 @@ Implements:
 
 ## Why
 
-Standard event-study TWFE regressions assume no residual serial dependence after unit/time fixed effects. When outcomes are persistent, the event-time dummies absorb persistence on top of the causal effect — spurious pre-trends, biased post-treatment estimates.
+Standard event-study TWFE regressions leave little room for residual serial
+dependence. When outcomes are persistent, event-time dummies can pick up
+persistence as well as the treatment effect. The result can look like
+pre-trends or biased post-treatment effects.
 
-`TVHTE.jl` fits a dynamic panel with correlated random coefficients on `(α_i, δ_{i0})` and an AR(1) on event-time effects, using two-step semiparametric estimation (QMLE + Gaussian-conjugate empirical Bayes). The (2026) extension factors the likelihood under a homogeneous feedback assumption so direct and indirect dynamic effects can be separately identified.
+`TVHTE.jl` fits the dynamic panel model with correlated random coefficients and
+an AR(1) structure on event-time effects. The feedback extension uses the
+homogeneous-feedback restriction from Botosaru and Liu (2026) to separate
+direct and indirect dynamic effects.
 
 ## Install
 
@@ -46,4 +54,6 @@ fb  = fit_feedback(sim.Y, sim.Y0, sim.X, sim.X0)
 cf  = simulate_counterfactual(fit, fb, 5; N_star = 500, seed = 99)
 ```
 
-The R companion package [`tvhte`](https://github.com/xiangao/tvhte) has a richer vignette including the direct/indirect decomposition plot. The two packages produce matching estimates up to MC noise.
+The R companion package [`tvhte`](https://github.com/xiangao/tvhte) has the
+longer vignette with the direct/indirect decomposition plot. The two packages
+are tested on the same simulated designs.
